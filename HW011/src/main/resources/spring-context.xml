@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="quizservice" class="ru.otus.main.quizservice.QuizServiceImpl">
+        <constructor-arg name="nameRequester" ref="namerequester"/>
+        <constructor-arg name="quizer" ref="quizer"/>
+        <constructor-arg name="questioner" ref="questioner"/>
+        <constructor-arg name="display" ref="display"/>
+    </bean>
+
+    <bean id="quizer" class="ru.otus.main.quiz.QuizerCSV">
+        <constructor-arg name="fileName" value="data.csv"/>
+    </bean>
+
+    <bean id="questioner" class="ru.otus.main.questioner.QuestionerImpl">
+    </bean>
+
+    <bean id="display" class="ru.otus.main.display.DisplayImpl">
+    </bean>
+
+    <bean id="namerequester" class="ru.otus.main.namerequester.NameRequesterImpl"/>
+</beans>
