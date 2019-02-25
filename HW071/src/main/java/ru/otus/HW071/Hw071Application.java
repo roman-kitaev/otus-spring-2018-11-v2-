@@ -1,0 +1,14 @@
+package ru.otus.HW071;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Hw071Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Hw071Application.class, args);
+	}
+
+}
+

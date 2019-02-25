@@ -1,0 +1,16 @@
+spring:
+  shell:
+    interactive:
+      enabled: true
+  jpa:
+    properties:
+      hibernate:
+        id:
+          new_generator_mappings: false
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydbtest?user=root&password=root&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
