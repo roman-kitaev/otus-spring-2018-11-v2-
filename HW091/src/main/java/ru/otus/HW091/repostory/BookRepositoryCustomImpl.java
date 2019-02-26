@@ -18,7 +18,7 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
     @Override
     public void addComment(Book book, String comment) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("booktitle").is(book.getTitle()));
+        query.addCriteria(Criteria.where("title").is(book.getTitle()));
         Update update = new Update();
         update.push("comments", comment);
         mongoTemplate.updateFirst(query, update, Book.class);
@@ -27,7 +27,7 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
     @Override
     public List<Book> findBooksByAuthorsAndGenres(List<String> authors,
                                                        List<String> genres) {
-        Criteria stubCriteria = Criteria.where("booktitle").exists(true);
+        Criteria stubCriteria = Criteria.where("title").exists(true);
         Query query = new Query();
 
         query.addCriteria(stubCriteria.
