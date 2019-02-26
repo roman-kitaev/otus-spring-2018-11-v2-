@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all persons</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h1>Books:</h1>
+<table class="books">
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>Title</th>
+        <th>Authors</th>
+        <th>Genres</th>
+        <th>Comments</th>
+        <th>Action</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}" th:class="${bookStat.odd}? 'odd'">
+        <td th:text="${bookStat.count}">1</td>
+        <td th:text="${book.title}">Peace And War</td>
+
+        <td>
+            <li th:each="author : ${book.authors}">
+                <span th:text="${author}">John Doe</span>
+            </li>
+        </td>
+
+        <td>
+            <li th:each="genre : ${book.genres}">
+                <span th:text="${genre}">Roman</span>
+            </li>
+        </td>
+
+        <td>
+            <li th:each="comment : ${book.comments}">
+                <span th:text="${comment}">Very good reading</span>
+            </li>
+        </td>
+
+        <td>
+            <a th:href="@{/edit(id=${book.id})}" href="edit.html">Edit</a>
+        </td>
+
+        <td>
+            <a th:href="@{/delete(id=${book.id})}" href="delete.html">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<form id="add-form" action="add">
+    <h1>Add a book:</h1>
+
+    <div class="row">
+        <label for="title-input">Title:</label>
+        <input id="title-input" name="title" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="genre-input">Genres:</label>
+        <input id="genre-input" name="genres" type="text"/>
+    </div>
+
+    <div class="row">
+        <label for="authors-input">Authors:</label>
+        <input id="authors-input" name="authors" type="text"/>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+
+</body>
+</html>
