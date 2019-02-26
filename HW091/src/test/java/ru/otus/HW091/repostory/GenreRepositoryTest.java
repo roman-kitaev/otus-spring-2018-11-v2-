@@ -10,7 +10,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.otus.HW091.domain.Author;
 import ru.otus.HW091.domain.Genre;
+
+import java.util.stream.Stream;
 
 @RunWith(SpringRunner.class)
 @DataMongoTest
@@ -49,9 +52,10 @@ public class GenreRepositoryTest {
     @Test
     public void countTest() {
         int n = 100;
-        for(int i = 0; i < n; i++) {
-            mongoTemplate.save(new Genre("Prose" + i));
-        }
+
+        Stream.iterate(1, k -> k + 1).limit(100).
+                forEach(k -> mongoTemplate.save(new Genre("Prose" + k)));
+
         Assert.assertEquals(n, genreRepository.count());
     }
 }

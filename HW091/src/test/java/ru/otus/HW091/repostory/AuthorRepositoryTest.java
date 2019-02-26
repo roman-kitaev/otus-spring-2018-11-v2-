@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.HW091.domain.Author;
 
+import java.util.stream.Stream;
+
 @RunWith(SpringRunner.class)
 @DataMongoTest
 public class AuthorRepositoryTest {
@@ -49,9 +51,10 @@ public class AuthorRepositoryTest {
     @Test
     public void countTest() {
         int n = 100;
-        for(int i = 0; i < n; i++) {
-            mongoTemplate.save(new Author("Author" + i));
-        }
+
+        Stream.iterate(1, k -> k + 1).limit(100).
+                forEach(k -> mongoTemplate.save(new Author("Author" + k)));
+
         Assert.assertEquals(n, authorRepository.count());
     }
 }

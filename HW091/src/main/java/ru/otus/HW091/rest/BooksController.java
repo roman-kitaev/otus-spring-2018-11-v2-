@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.otus.HW091.domain.Author;
 import ru.otus.HW091.domain.Book;
+import ru.otus.HW091.domain.Genre;
 import ru.otus.HW091.repostory.AuthorRepository;
 import ru.otus.HW091.repostory.BookRepository;
 import ru.otus.HW091.repostory.GenreRepository;
@@ -25,6 +27,12 @@ public class BooksController {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.genreRepository = genreRepository;
+
+        authorRepository.save(new Author("Pushkin"));
+        authorRepository.save(new Author("Tolstoy"));
+        genreRepository.save(new Genre("Prose"));
+        genreRepository.save(new Genre("Roman"));
+        genreRepository.save(new Genre("Lyric"));
     }
 
     @GetMapping("/")

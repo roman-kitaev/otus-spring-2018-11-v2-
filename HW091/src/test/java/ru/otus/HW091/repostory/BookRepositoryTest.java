@@ -17,6 +17,7 @@ import ru.otus.HW091.domain.Genre;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 @RunWith(SpringRunner.class)
 @DataMongoTest
@@ -27,63 +28,60 @@ public class BookRepositoryTest {
     @Autowired
     private BookRepository bookRepository;
 
+    private Book book1, book2, book3;
+
     @Before
-    public void deleteAll() {
+    public void deleteAndCreate() {
         bookRepository.deleteAll();
-    }
 
-    @Test
-    public void contextLoads() {
-        bookRepository.save(new Book("Good Book"));
-    }
-
-    @Test
-    public void insertTest() {
-        String author ="Tolstoy";
-        String genre = "Novel";
-        String comment1 = "Very very best book";
-        String comment2 = "Pretty amazing reading before sleep";
-
-        Book book = new Book("Peace And War");
-        book.addGenre(new Genre(genre));
-        book.addAuthor(new Author(author));
-        book.addComment(comment1);
-        book.addComment(comment2);
-
-        bookRepository.save(book);
-
-        Book bookToRetrieve = mongoTemplate.findOne(
-                new Query().addCriteria(Criteria.where("title").is(book.getTitle())),
-                Book.class
-        );
-
-        Assert.assertEquals(book, bookToRetrieve);
-    }
-
-    @Test
-    public void countTest() {
-        int n = 100;
-        for(int i = 0; i < n; i++) {
-            mongoTemplate.save(new Book("Book" + i));
-        }
-        Assert.assertEquals(n, bookRepository.count());
-    }
-
-    @Test
-    public void deleteTest() {
         String author1 ="Pushkin";
         String author2 ="Tolstoy";
         String genre1 = "Novel";
         String genre2 = "Poem";
 
-        Book book1 = new Book("Peace And War");
+        String comment1 = "Very very best book";
+        String comment2 = "Pretty amazing reading before sleep";
+
+        book1 = new Book("Peace And War");
         book1.addAuthor(new Author(author2));
         book1.addGenre(new Genre(genre1));
+        book1.addComment(comment1);
+        book1.addComment(comment2);
 
-        Book book2 = new Book("Ruslan and Ludmila");
+        book2 = new Book("Ruslan and Ludmila");
         book2.addAuthor(new Author(author1));
         book2.addGenre(new Genre(genre2));
+    }
 
+    @Test
+    public void contextLoads() {
+        bookRepository.save(book1);
+    }
+
+    @Test
+    public void insertTest() {
+        bookRepository.save(book1);
+
+        Book bookToRetrieve = mongoTemplate.findOne(
+                new Query().addCriteria(Criteria.where("title").is(book1.getTitle())),
+                Book.class
+        );
+
+        Assert.assertEquals(book1, bookToRetrieve);
+    }
+
+    @Test
+    public void countTest() {
+        int n = 100;
+
+        Stream.iterate(1, k -> k + 1).limit(100).
+                forEach(k -> mongoTemplate.save(new Book("Book" + k)));
+
+        Assert.assertEquals(n, bookRepository.count());
+    }
+
+    @Test
+    public void deleteTest() {
         mongoTemplate.save(book1);
         mongoTemplate.save(book2);
 
@@ -165,26 +163,23 @@ public class BookRepositoryTest {
 
     @Test
     public void addCommentTest() {
-        String author ="Tolstoy";
-        String genre = "Novel";
         String comment1 = "Very very best book";
         String comment2 = "Pretty amazing reading before sleep";
+        String comment3 = "Will buy two more!";
 
-        Book book = new Book("Peace And War");
-        book.addGenre(new Genre(genre));
-        book.addAuthor(new Author(author));
-        book.addComment(comment1);
+        book2.addComment(comment1);
+        book2.addComment(comment2);
 
-        mongoTemplate.save(book);
+        mongoTemplate.save(book2);
 
-        bookRepository.addComment(book, comment2);
+        bookRepository.addComment(book2, comment3);
 
         Book bookToRetrieve = mongoTemplate.findOne(
-                new Query().addCriteria(Criteria.where("title").is(book.getTitle())),
+                new Query().addCriteria(Criteria.where("title").is(book2.getTitle())),
                 Book.class
         );
 
-        Assert.assertEquals(Arrays.asList(comment1, comment2),
+        Assert.assertEquals(Arrays.asList(comment1, comment2, comment3),
                 bookToRetrieve.getComments());
     }
 }
