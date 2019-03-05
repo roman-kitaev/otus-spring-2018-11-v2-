@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit book</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+
+<h1>Book Info:</h1>
+
+<div class="row">
+    <label for="id-input">ID:</label>
+    <input id="id-input" type="text" name="id" readonly="readonly" value=""/>
+</div>
+
+<div class="row">
+    <label for="title-input">Title:</label>
+    <input id="title-input" name="newtitle" type="text" value=""/>
+</div>
+
+<div class="row">
+    <label for="genre-input">Genres:</label>
+    <input id="genre-input" name="newgenres" type="text" value=""/>
+</div>
+
+<div class="row">
+    <label for="authors-input">Authors:</label>
+    <input id="authors-input" name="newauthors" type="text" value=""/>
+</div>
+
+<div class="row">
+    <label for="comments-input">Comments:</label>
+    <input id="comments-input" name="newcomments" type="text" value=""/>
+</div>
+
+<div class="row">
+    <button type="submit" id = "savebutton">Save</button>
+</div>
+
+<script>
+    $(function () {
+        var id = $(location).attr('search');
+        id = id.replace("?id=", "");
+
+        $.ajax({
+            url: '/api/book',
+            type: 'POST',
+            data: id,
+            success: function (bookFromServer) {
+                fillTheFields(bookFromServer);
+            }
+        });
+
+        $("#savebutton").click(function () {
+            var inputGenres = $("#genre-input").val().
+            replace(/, /g, ",").split(",");
+
+            var inputAuthors = $("#authors-input").val().
+            replace(/, /g, ",").split(",");
+
+            var inputComments = $("#comments-input").val().
+            replace(/, /g, ",").split(",");
+
+            var data = {"id" : $("#id-input").val(),
+                "title" : $("#title-input").val(),
+                "genres" : inputGenres,
+                "authors" : inputAuthors,
+                "comments" : inputComments};
+
+            $.ajax({
+                url: '/api/addbook',
+                type: 'POST',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data),
+                dataType:'json',
+                success: function (dataFromServer) {
+                    fillTheFields(dataFromServer);
+                }
+            });
+        });
+
+        function fillTheFields(book) {
+            $("#id-input").val(book["id"]);
+            $("#title-input").val(book["title"]);
+            $("#genre-input").val(book["genres"]);
+            $("#authors-input").val(book["authors"]);
+            $("#comments-input").val(book["comments"]);
+        }
+    });
+</script>
+
+</body>
+</html>
