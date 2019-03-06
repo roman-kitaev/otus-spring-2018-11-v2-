@@ -62,6 +62,28 @@ public class BookController {
     public String delete(@PathVariable String idToDelete) {
         String id = idToDelete.replace("=", "");
         bookService.deleteById(id);
-        return "{\"msg\":\"success\"}";
+        MsgStatusForAjax msgStatus = MsgStatusForAjax.getSuccessMsgStatus();
+        return msgStatus.getStatus();
+    }
+
+    private static class MsgStatusForAjax {
+        private String status;
+
+        private MsgStatusForAjax(String status) {
+            this.status = status;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public static MsgStatusForAjax getSuccessMsgStatus() {
+            return new MsgStatusForAjax("{\"msg\":\"success\"}");
+        }
+
+        public static MsgStatusForAjax getErrorMsgStatus() {
+            return new MsgStatusForAjax("{\"msg\":\"error\"}");
+        }
     }
 }
+
