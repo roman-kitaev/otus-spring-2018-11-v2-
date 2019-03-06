@@ -39,20 +39,24 @@ public class BookController {
     }
 
     @PostMapping("/api/addbook")
-    public BookDto addBook(@RequestBody Book bookToAdd) {
-        bookToAdd.setAuthors(
-        bookToAdd.getAuthors().stream().
+    public BookDto addBook(@RequestBody BookDto bookFromFront) {
+        Book book = new Book(bookFromFront.getTitle());
+        book.setId(bookFromFront.getId());
+        book.setComments(bookFromFront.getComments());
+
+        book.setAuthors(
+                bookFromFront.getAuthors().stream().
                 filter(author -> (authorService.findByName(author) != null) ? true : false).
                 collect(Collectors.toSet()));
 
-        bookToAdd.setGenres(
-        bookToAdd.getGenres().stream().
+        book.setGenres(
+                bookFromFront.getGenres().stream().
                 filter(genre -> (genreService.findByGenre(genre) != null) ? true : false).
                 collect(Collectors.toSet()));
 
-        bookToAdd = bookService.save(bookToAdd);
+        book = bookService.save(book);
 
-        BookDto bookDto = BookDto.toDto(bookToAdd);
+        BookDto bookDto = BookDto.toDto(book);
         bookDto.setMsgSuccess();
 
         return bookDto;
