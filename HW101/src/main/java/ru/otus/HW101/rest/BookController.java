@@ -2,9 +2,7 @@ package ru.otus.HW101.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.otus.HW101.domain.Author;
 import ru.otus.HW101.domain.Book;
-import ru.otus.HW101.domain.Genre;
 import ru.otus.HW101.rest.dto.BookDto;
 import ru.otus.HW101.service.AuthorService;
 import ru.otus.HW101.service.BookService;
@@ -31,16 +29,6 @@ public class BookController {
     public List<BookDto> getAllBooks() {
         return bookService.findAll().stream().map(BookDto::toDto)
                 .collect(Collectors.toList());
-    }
-
-    @GetMapping("/api/authors")
-    public List<Author> getAllAuthors() {
-        return authorService.findAll();
-    }
-
-    @GetMapping("/api/genres")
-    public List<Genre> getAllGenres() {
-        return genreService.findAll();
     }
 
     @PostMapping("/api/book")
