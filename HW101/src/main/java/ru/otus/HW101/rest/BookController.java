@@ -31,8 +31,8 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/api/book")
-    public Book getBook(@RequestBody String idToGet) {
+    @GetMapping("/api/book/{idToGet}")
+    public Book getBook(@PathVariable String idToGet) {
         String id = idToGet.replace("=", "");
         Book book = bookService.findById(id);
         return book;
