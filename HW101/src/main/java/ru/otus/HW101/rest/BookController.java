@@ -9,6 +9,7 @@ import ru.otus.HW101.service.BookService;
 import ru.otus.HW101.service.GenreService;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @RestController
@@ -40,11 +41,15 @@ public class BookController {
 
     @PostMapping("/api/addbook")
     public BookDto addBook(@RequestBody Book bookToAdd) {
-        List<String> availableAuthors = authorService.findAll().stream().map(author -> author.getName()).collect(Collectors.toList());
-        bookToAdd.getAuthors().retainAll(availableAuthors);
+        bookToAdd.setAuthors(
+        bookToAdd.getAuthors().stream().
+                filter(author -> (authorService.findByName(author) != null) ? true : false).
+                collect(Collectors.toSet()));
 
-        List<String> availableGenres = genreService.findAll().stream().map(genre -> genre.getGenre()).collect(Collectors.toList());
-        bookToAdd.getGenres().retainAll(availableGenres);
+        bookToAdd.setGenres(
+        bookToAdd.getGenres().stream().
+                filter(genre -> (genreService.findByGenre(genre) != null) ? true : false).
+                collect(Collectors.toSet()));
 
         bookToAdd = bookService.save(bookToAdd);
 
