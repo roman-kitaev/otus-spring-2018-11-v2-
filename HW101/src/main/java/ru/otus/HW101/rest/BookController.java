@@ -9,7 +9,6 @@ import ru.otus.HW101.service.BookService;
 import ru.otus.HW101.service.GenreService;
 
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @RestController
@@ -59,8 +58,8 @@ public class BookController {
         return bookDto;
     }
 
-    @PostMapping("/api/delbook")
-    public String delBook(@RequestBody String idToDelete) {
+    @PostMapping("/api/delete/{idToDelete}")
+    public String delete(@PathVariable String idToDelete) {
         String id = idToDelete.replace("=", "");
         bookService.deleteById(id);
         return "{\"msg\":\"success\"}";

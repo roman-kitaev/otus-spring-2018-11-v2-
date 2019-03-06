@@ -97,7 +97,7 @@
             var todelete = this.id;
             todelete = todelete.replace("but", "");
             $.ajax({
-                url: '/api/delbook',
+                url: '/api/delete/' + todelete,
                 type: 'POST',
                 data: todelete,
                 success: function () {
