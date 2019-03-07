@@ -45,14 +45,16 @@ public class BookController {
         book.setComments(bookFromFront.getComments());
 
         book.setAuthors(
-                bookFromFront.getAuthors().stream().
-                filter(author -> (authorService.findByName(author) != null) ? true : false).
-                collect(Collectors.toSet()));
+                authorService.findAll().stream().
+                        map(author -> author.getName()).
+                        filter(author -> (bookFromFront.getAuthors().contains(author))).
+                        collect(Collectors.toSet()));
 
         book.setGenres(
-                bookFromFront.getGenres().stream().
-                filter(genre -> (genreService.findByGenre(genre) != null) ? true : false).
-                collect(Collectors.toSet()));
+                genreService.findAll().stream().
+                        map(genre -> genre.getGenre()).
+                        filter(genre -> (bookFromFront.getGenres().contains(genre))).
+                        collect(Collectors.toSet()));
 
         book = bookService.save(book);
 
