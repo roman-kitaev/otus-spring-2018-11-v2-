@@ -1,5 +1,6 @@
 package ru.otus.HW101.rest;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.HW101.domain.Book;
@@ -68,28 +69,8 @@ public class BookController {
     public String delete(@PathVariable String idToDelete) {
         String id = idToDelete.replace("=", "");
         bookService.deleteById(id);
-        MsgStatusForAjax msgStatus = MsgStatusForAjax.getSuccessMsgStatus();
-        return msgStatus.getStatus();
-    }
-
-    private static class MsgStatusForAjax {
-        private String status;
-
-        private MsgStatusForAjax(String status) {
-            this.status = status;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public static MsgStatusForAjax getSuccessMsgStatus() {
-            return new MsgStatusForAjax("{\"msg\":\"success\"}");
-        }
-
-        public static MsgStatusForAjax getErrorMsgStatus() {
-            return new MsgStatusForAjax("{\"msg\":\"error\"}");
-        }
+        Gson gson = new Gson();
+        return gson.toJson(Msg.getSuccess());
     }
 }
 

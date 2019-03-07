@@ -99,8 +99,8 @@
             $.ajax({
                 url: '/api/delete/' + todelete,
                 type: 'DELETE',
-                data: todelete,
-                success: function () {
+                dataType:'json',
+                success: function (dataFromServer) {
                     $('#line' + todelete).remove();
                 }
             });
