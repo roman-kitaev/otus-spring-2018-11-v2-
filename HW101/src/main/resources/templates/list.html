@@ -98,7 +98,7 @@
             todelete = todelete.replace("but", "");
             $.ajax({
                 url: '/api/delete/' + todelete,
-                type: 'POST',
+                type: 'DELETE',
                 data: todelete,
                 success: function () {
                     $('#line' + todelete).remove();

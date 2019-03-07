@@ -64,7 +64,7 @@ public class BookController {
         return bookDto;
     }
 
-    @PostMapping("/api/delete/{idToDelete}")
+    @DeleteMapping("/api/delete/{idToDelete}")
     public String delete(@PathVariable String idToDelete) {
         String id = idToDelete.replace("=", "");
         bookService.deleteById(id);
