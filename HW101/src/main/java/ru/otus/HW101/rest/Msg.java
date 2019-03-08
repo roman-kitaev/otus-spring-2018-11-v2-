@@ -13,6 +13,14 @@ public class Msg {
         return new Msg("error");
     }
 
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
     @Override
     public String toString() {
         return "Msg{" +

@@ -1,6 +1,5 @@
 package ru.otus.HW101.rest;
 
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.HW101.domain.Book;
@@ -66,11 +65,10 @@ public class BookController {
     }
 
     @DeleteMapping("/api/delete/{idToDelete}")
-    public String delete(@PathVariable String idToDelete) {
+    public Msg delete(@PathVariable String idToDelete) {
         String id = idToDelete.replace("=", "");
         bookService.deleteById(id);
-        Gson gson = new Gson();
-        return gson.toJson(Msg.getSuccess());
+        return Msg.getSuccess();
     }
 }
 
