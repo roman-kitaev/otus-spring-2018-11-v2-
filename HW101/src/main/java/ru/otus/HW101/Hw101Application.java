@@ -12,6 +12,7 @@ import ru.otus.HW101.repostory.GenreRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @SpringBootApplication

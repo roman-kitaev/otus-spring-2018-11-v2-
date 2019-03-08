@@ -19,4 +19,8 @@ public class AuthorService {
     public Author findByName(String name) {
         return authorRepository.findByName(name);
     }
+
+    public List<Author> findAuthorsByNames(List<String> names) {
+        return authorRepository.findAuthorsByNames(names);
+    }
 }

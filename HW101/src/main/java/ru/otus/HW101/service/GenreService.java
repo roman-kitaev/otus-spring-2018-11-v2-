@@ -19,4 +19,8 @@ public class GenreService {
     public Genre findByGenre(String genre) {
         return genreRepository.findByGenre(genre);
     }
+
+    public List<Genre> findGenresByNames(List<String> names) {
+        return genreRepository.findGenresByNames(names);
+    }
 }
