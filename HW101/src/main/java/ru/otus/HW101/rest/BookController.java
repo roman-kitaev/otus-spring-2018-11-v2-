@@ -8,7 +8,6 @@ import ru.otus.HW101.service.AuthorService;
 import ru.otus.HW101.service.BookService;
 import ru.otus.HW101.service.GenreService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,11 +45,11 @@ public class BookController {
         book.setComments(bookFromFront.getComments());
 
         book.setAuthors(
-        authorService.findAuthorsByNames(new ArrayList<>(bookFromFront.getAuthors()))
+        authorService.findByNameIn(bookFromFront.getAuthors())
         .stream().map(author -> author.getName()).collect(Collectors.toSet()));
 
         book.setGenres(
-        genreService.findGenresByNames(new ArrayList<>(bookFromFront.getGenres()))
+        genreService.findByGenreIn(bookFromFront.getGenres())
         .stream().map(genre -> genre.getGenre()).collect(Collectors.toSet()));
 
         book = bookService.save(book);

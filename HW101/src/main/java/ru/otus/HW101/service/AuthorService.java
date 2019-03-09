@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.HW101.domain.Author;
 import ru.otus.HW101.repostory.AuthorRepository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -20,7 +21,7 @@ public class AuthorService {
         return authorRepository.findByName(name);
     }
 
-    public List<Author> findAuthorsByNames(List<String> names) {
-        return authorRepository.findAuthorsByNames(names);
+    public List<Author> findByNameIn(Collection names) {
+        return authorRepository.findByNameIn(names);
     }
 }

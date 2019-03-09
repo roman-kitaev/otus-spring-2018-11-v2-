@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.HW101.domain.Genre;
 import ru.otus.HW101.repostory.GenreRepository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -20,7 +21,7 @@ public class GenreService {
         return genreRepository.findByGenre(genre);
     }
 
-    public List<Genre> findGenresByNames(List<String> names) {
-        return genreRepository.findGenresByNames(names);
+    public List<Genre> findByGenreIn(Collection genres) {
+        return genreRepository.findByGenreIn(genres);
     }
 }
