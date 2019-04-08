@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all books</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Books (admin page):</h1>
+<table class="books">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Authors</th>
+        <th>Genres</th>
+        <th>Comments</th>
+        <th>Action</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody id = "bookstbody"></tbody>
+</table>
+
+<h2>Add a book:</h2>
+<h3>Separate multiple values by comma, e.g.: Author1, Author2</h3>
+<p id = "genres">Available genres: </p>
+<p id = "authors">Available authors: </p>
+<h5>all unavailable values will be ignored</h5>
+
+
+<div class="row">
+    <label for="title-input">Title:</label>
+    <input id="title-input" name="title" type="text"/>
+</div>
+
+<div class="row">
+    <label for="genre-input">Genres:</label>
+    <input id="genre-input" name="genres" type="text"/>
+</div>
+
+<div class="row">
+    <label for="authors-input">Authors:</label>
+    <input id="authors-input" name="authors" type="text"/>
+</div>
+
+<div class="row">
+    <input type="button" id="savebutton" value="Save" />
+</div>
+
+<script>
+    $(function () {
+        $.get('/api/books').done(function (books) {
+            books.forEach(function (book) {
+                appendBook(book);
+            });
+        });
+
+        $.get('/api/genres').done(function (genres) {
+            genres.forEach(function (genre) {
+                $("#genres").append(genre["genre"] + " ");
+            });
+        });
+
+        $.get('/api/authors').done(function (authors) {
+            authors.forEach(function (author) {
+                $("#authors").append(author["name"] + " ");
+            });
+        });
+
+        $("#savebutton").click(function () {
+            var inputGenres = $("#genre-input").val().
+                                replace(/, /g, ",").split(",");
+
+            var inputAuthors = $("#authors-input").val().
+                                replace(/, /g, ",").split(",");
+
+            var data = {"title" : $("#title-input").val(),
+                "genres" : inputGenres,
+                "authors" : inputAuthors,
+                "comments" : [""]};
+
+            $.ajax({
+                url: '/api/addbook',
+                type: 'POST',
+                contentType:'application/json; charset=utf-8',
+                data: JSON.stringify(data),
+                dataType:'json',
+                success: function (dataFromServer) {
+                    appendBook(dataFromServer);
+                }
+            });
+        });
+
+        $(document).on("click", ".delbut", function () {
+            var todelete = this.id;
+            todelete = todelete.replace("but", "");
+            $.ajax({
+                url: '/api/delete/' + todelete,
+                type: 'DELETE',
+                dataType:'json',
+                success: function (dataFromServer) {
+                    $('#line' + todelete).remove();
+                }
+            });
+        });
+
+        function appendBook(book) {
+            $('tbody').append('<tr id = "line' + book["id"] + '">' +
+                '<td>' + book["title"] + '</td>' +
+                '<td>' + book["authors"] + '</td>' +
+                '<td>' + book["genres"] + '</td>' +
+                '<td>' + book["comments"] + '</td>' +
+                '<td><a href="/edit?id=' + book["id"] + '">edit</a></td>' +
+                '<td><input type="button" class = "delbut" id = "but' + book["id"] + '" value="delete"/></td>' +
+                '</tr>');
+        }
+    });
+</script>
+</body>
+</html>
