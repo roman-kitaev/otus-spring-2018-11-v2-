@@ -8,23 +8,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import ru.otus.HW131.domain.Reader;
+import ru.otus.HW131.domain.Role;
 import ru.otus.HW131.repostory.ReadersRepository;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class MongoReaderDetailsService implements UserDetailsService {
-
-    private Map<String, List<SimpleGrantedAuthority>> roles = new HashMap<>();
-
-    {
-        roles.put("admin1", Arrays.asList(new SimpleGrantedAuthority("ROLE_CAN_DELETE")));
-        roles.put("admin2", Arrays.asList(new SimpleGrantedAuthority("ROLE_CAN_EDIT")));
-        roles.put("admin3", Arrays.asList(new SimpleGrantedAuthority("ROLE_CAN_ADD")));
-    }
 
     @Autowired
     private ReadersRepository readersRepository;
@@ -37,6 +27,16 @@ public class MongoReaderDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Reader not found");
         }
 
-        return new User(user.getUsername(), user.getPassword(), roles.get(username));
+        System.out.println(username + " was logged");
+        List<SimpleGrantedAuthority> permissions = new ArrayList<>();
+        for(Role role : user.getRoles()) {
+            for(String permission : role.getPermissions()) {
+                permissions.add(new SimpleGrantedAuthority(permission));
+                System.out.println(permission);
+            }
+        }
+        System.out.println();
+
+        return new User(user.getUsername(), user.getPassword(), permissions);
     }
 }
