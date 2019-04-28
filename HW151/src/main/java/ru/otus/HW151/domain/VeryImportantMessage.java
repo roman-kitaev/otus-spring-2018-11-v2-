@@ -5,22 +5,30 @@ import java.util.Random;
 public class VeryImportantMessage {
     private static int base = 1;
     private static Random rand = new Random();
-    private int id = base++;
-    private String cypher;
+    private final int id = base++;
+    private final String msg;
 
     public VeryImportantMessage() {
         char[] chars = {(char)rand.nextInt(255), (char)rand.nextInt(255),
                 (char)rand.nextInt(255), (char)rand.nextInt(255),
                 (char)rand.nextInt(255)};
 
-        cypher = new String(chars);
+        msg = new String(chars);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getMsg() {
+        return msg;
     }
 
     @Override
     public String toString() {
         return "VeryImportantMessage{" +
                 "id=" + id +
-                ", cypher='" + cypher + '\'' +
+                ", cypher='" + msg + '\'' +
                 '}';
     }
 }
