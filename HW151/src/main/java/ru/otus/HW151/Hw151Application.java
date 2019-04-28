@@ -69,7 +69,7 @@ public class Hw151Application {
 		MessageChannel messageChannel = ctx.getBean("messageChannel", MessageChannel.class);
 
 		while(true) {
-			Thread.sleep(1000);
+			Thread.sleep(1500);
 
 			VeryImportantMessage veryImportantMessage = new VeryImportantMessage();
 			System.out.println("New VIM: " + veryImportantMessage);
