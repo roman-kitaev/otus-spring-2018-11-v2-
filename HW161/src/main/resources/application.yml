@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      database: books
+      port: 27017
+      host: localhost
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+logging:
+  file: logfile.log
