@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="keywords" th:content="${keywords}"/>
+    <title>List of all books</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>Books:</h1>
+<table class="books">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Authors</th>
+        <th>Genres</th>
+        <th>Comments</th>
+    </tr>
+    </thead>
+    <tbody id = "bookstbody"></tbody>
+</table>
+<a href="/admin">admin</a>
+<script>
+    $(function () {
+        $.get('/api/books').done(function (books) {
+            books.forEach(function (book) {
+                appendBook(book);
+            });
+        });
+
+        function appendBook(book) {
+            $('tbody').append('<tr id = "line' + book["id"] + '">' +
+                '<td>' + book["title"] + '</td>' +
+                '<td>' + book["authors"] + '</td>' +
+                '<td>' + book["genres"] + '</td>' +
+                '<td>' + book["comments"] + '</td>' +
+                '</tr>');
+        }
+    });
+</script>
+</body>
+</html>
